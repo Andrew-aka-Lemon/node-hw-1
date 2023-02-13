@@ -1,0 +1,27 @@
+{
+  "name": "hode-hw-1",
+  "version": "1.0.0",
+  "description": "try to start node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andrew-aka-Lemon/node-hw-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andrew-aka-Lemon/node-hw-1/issues"
+  },
+  "homepage": "https://github.com/Andrew-aka-Lemon/node-hw-1#readme",
+  "dependencies": {
+    "commander": "^10.0.0",
+    "nanoid": "^4.0.1",
+    "nodemon": "^2.0.20"
+  }
+
+}
