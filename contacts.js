@@ -11,6 +11,7 @@ async function listContacts() {
   } catch (error) {
     console.log("Can't read Contacts!");
   }
+  console.log(typeof contacts[0].id);
 
   console.table(contacts);
 }
@@ -51,7 +52,7 @@ async function removeContact(contactId) {
 }
 
 async function addContact(name, email, phone) {
-  const id = Date.now();
+  const id = Date.now().toString();
   const newContact = { id, name, email, phone };
 
   let contacts = [];
