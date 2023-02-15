@@ -1,41 +1,38 @@
-const contacts = require("./contacts");
+const contacts = require('./contacts');
 
-
-const { Command } = require("commander");
+const { Command } = require('commander');
 const program = new Command();
 program
-  .option("-a, --action <type>", "choose action")
-  .option("-i, --id <type>", "user id")
-  .option("-n, --name <type>", "user name")
-  .option("-e, --email <type>", "user email")
-  .option("-p, --phone <type>", "user phone");
+  .option('-a, --action <type>', 'choose action')
+  .option('-i, --id <type>', 'user id')
+  .option('-n, --name <type>', 'user name')
+  .option('-e, --email <type>', 'user email')
+  .option('-p, --phone <type>', 'user phone');
 
 program.parse(process.argv);
 
 const argv = program.opts();
 
-// TODO: рефакторить
-function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
-    case "list":
-          contacts.listContacts()
+    case 'list':
+      console.table(await contacts.listContacts());
       break;
 
-    case "get":
-      contacts.getContactById(id)
-          break;
-      
-    case "remove":
-      contacts.removeContact(id)
+    case 'get':
+      console.table(await contacts.getContactById(id));
       break;
 
-    case "add":
-      contacts.addContact(name, email, phone)
+    case 'remove':
+      console.table(await contacts.removeContact(id));
       break;
 
+    case 'add':
+      console.table(await contacts.addContact(name, email, phone));
+      break;
 
     default:
-      console.warn("\x1B[31m Unknown action t-`ype!");
+      console.warn('\x1B[31m Unknown action t-`ype!');
   }
 }
 

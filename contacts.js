@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { nanoid } = require('nanoid');
 
 const contactsPath = path.resolve('db/contacts.json');
 
@@ -11,31 +12,22 @@ async function listContacts() {
   } catch (error) {
     console.log("Can't read Contacts!");
   }
-  console.log(typeof contacts[0].id);
 
-  console.table(contacts);
+  return contacts;
 }
 
 async function getContactById(contactId) {
-  let contacts = [];
-  try {
-    contacts = JSON.parse(await fs.readFile(contactsPath, 'utf8'));
-  } catch (error) {
-    console.log("Can't read Contacts!");
-  }
-
+  const contacts = await listContacts();
   const choosenContact = contacts.filter(contact => contact.id === contactId);
-
-  console.table(choosenContact);
+  if (choosenContact.length === 0) {
+    console.log('There is no book with such ID !');
+    return null;
+  }
+  return choosenContact;
 }
 
 async function removeContact(contactId) {
-  let contacts = [];
-  try {
-    contacts = JSON.parse(await fs.readFile(contactsPath, 'utf8'));
-  } catch (error) {
-    console.log("Can't read Contacts!");
-  }
+  const contacts = await listContacts();
 
   const withoutChoosenContact = contacts.filter(
     contact => contact.id !== contactId
@@ -43,31 +35,25 @@ async function removeContact(contactId) {
 
   if (contacts.length === withoutChoosenContact.length) {
     console.log('There is no contact with such ID !');
-    return;
+    return null;
   }
 
   fs.writeFile(contactsPath, JSON.stringify(withoutChoosenContact));
 
-  console.table(withoutChoosenContact);
+  return withoutChoosenContact;
 }
 
 async function addContact(name, email, phone) {
-  const id = Date.now().toString();
+  const id = nanoid();
   const newContact = { id, name, email, phone };
 
-  let contacts = [];
-
-  try {
-    contacts = JSON.parse(await fs.readFile(contactsPath, 'utf8'));
-  } catch (error) {
-    console.log("Can't read Contacts!");
-  }
+  const contacts = await listContacts();
 
   const newContacts = [...contacts, newContact];
 
   fs.writeFile(contactsPath, JSON.stringify(newContacts));
 
-  console.table(newContacts);
+  return newContacts;
 }
 
 module.exports = {
