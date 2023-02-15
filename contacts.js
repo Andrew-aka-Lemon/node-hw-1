@@ -38,7 +38,7 @@ async function removeContact(contactId) {
     return null;
   }
 
-  fs.writeFile(contactsPath, JSON.stringify(withoutChoosenContact));
+  fs.writeFile(contactsPath, JSON.stringify(withoutChoosenContact, null, 2));
 
   return withoutChoosenContact;
 }
@@ -51,7 +51,7 @@ async function addContact(name, email, phone) {
 
   const newContacts = [...contacts, newContact];
 
-  fs.writeFile(contactsPath, JSON.stringify(newContacts));
+  fs.writeFile(contactsPath, JSON.stringify(newContacts, null, 2));
 
   return newContacts;
 }
