@@ -43,9 +43,9 @@ async function removeContact(contactId) {
   return withoutChoosenContact;
 }
 
-async function addContact(name, email, phone) {
+async function addContact(body) {
   const id = nanoid();
-  const newContact = { id, name, email, phone };
+  const newContact = { id, ...body };
 
   const contacts = await listContacts();
 
@@ -56,9 +56,29 @@ async function addContact(name, email, phone) {
   return newContacts;
 }
 
+const updateContact = async (contactId, body) => {
+  const contacts = await listContacts();
+
+  const index = contacts.findIndex(contact => contact.id === contactId);
+
+  if (index === -1) {
+    console.log('There is no contact with such ID !');
+    return null;
+  }
+
+  const updatedContact = { contactId, ...body };
+
+  contacts.splice(index, 1, updatedContact);
+
+  fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+
+  return updatedContact;
+};
+
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
+  updateContact,
 };
